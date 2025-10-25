@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /*
-* idea we mark the whole think with '*'
-* when we place sth we fill in the fields that cannot have ships on them with '.'
-* that way to know if we can place a shipsegment on a field we only have to check if theres a '*' there atm
-* at the end you gotta fill in the water tho
-* */
+* idea we mark the whole thing with '*'
+* when we place a ship we fill in the fields that cannot have ships on them with '.'
+* that way to know if we can place a shipsegment on a field we only have to check if theres a '*' there
+* at the end remaining '*' get coverted to '.'
+*/
 
 
 public class BattleShipGeneratorImpl implements  BattleshipGenerator{
@@ -40,8 +40,8 @@ public class BattleShipGeneratorImpl implements  BattleshipGenerator{
 
     private void placeShips(int size) {
         Random random = new Random();
-
-        while (true) {
+        int attempts = 1000;
+        while (attempts-- > 0) {
             int pos = random.nextInt(ROWS * COLS);
             if (getField(pos) == '*') {
                 ArrayList<Integer> selection = new ArrayList<>();
@@ -66,7 +66,7 @@ public class BattleShipGeneratorImpl implements  BattleshipGenerator{
                 }
 
                 if (selection.size() == size) {
-                    select(selection, neighbours); // you can implement marking here
+                    select(selection, neighbours);
                     break;
                 }
             }
