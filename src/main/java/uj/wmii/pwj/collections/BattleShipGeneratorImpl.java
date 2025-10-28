@@ -4,13 +4,6 @@ package uj.wmii.pwj.collections;
 import java.util.ArrayList;
 import java.util.Random;
 
-/*
-* idea we mark the whole thing with '*'
-* when we place a ship we fill in the fields that cannot have ships on them with '.'
-* that way to know if we can place a shipsegment on a field we only have to check if theres a '*' there
-* at the end remaining '*' get coverted to '.'
-*/
-
 
 public class BattleShipGeneratorImpl implements  BattleshipGenerator{
     final int ROWS = 10;
