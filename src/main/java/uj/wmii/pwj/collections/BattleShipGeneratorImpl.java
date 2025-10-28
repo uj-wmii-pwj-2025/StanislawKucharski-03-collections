@@ -4,9 +4,6 @@ package uj.wmii.pwj.collections;
 import java.util.ArrayList;
 import java.util.Random;
 
-
-class LuckException extends Exception{}
-
 public class BattleShipGeneratorImpl implements  BattleshipGenerator{
     final int ROWS = 10;
     final int COLS = 10;
