@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+class LuckException extends Exception{}
+
 public class BattleShipGeneratorImpl implements  BattleshipGenerator{
     final int ROWS = 10;
     final int COLS = 10;
     final int[] SIZES = {4,3,2,1};
     final int[] AMOUNTS = {1,2,3,4};
+    final int TRIES = 5;
+    final int ATTEMPTS = 1000;
     StringBuilder map;
 
 
@@ -31,9 +35,9 @@ public class BattleShipGeneratorImpl implements  BattleshipGenerator{
         return n == 4 ? tmp : java.util.Arrays.copyOf(tmp, n);
     }
 
-    private void placeShips(int size) {
+    private boolean placeShips(int size) {
         Random random = new Random();
-        int attempts = 1000;
+        int attempts = ATTEMPTS;
         while (attempts-- > 0) {
             int pos = random.nextInt(ROWS * COLS);
             if (getField(pos) == '*') {
@@ -43,7 +47,7 @@ public class BattleShipGeneratorImpl implements  BattleshipGenerator{
                 for (int n : availableNeighbours(pos)) {
                     neighbours.add(n);
                 }
-                int tries = 5;
+                int tries = TRIES;
                 while (selection.size() < size && tries > 0 && !neighbours.isEmpty()) {
                     tries--;
                     int idx = random.nextInt(neighbours.size());
@@ -64,6 +68,8 @@ public class BattleShipGeneratorImpl implements  BattleshipGenerator{
                 }
             }
         }
+        if(attempts == 0)return false;
+        else return true;
     }
 
     private void select(ArrayList<Integer> selection, ArrayList<Integer> neighbours){
@@ -94,14 +100,21 @@ public class BattleShipGeneratorImpl implements  BattleshipGenerator{
 
 
     public String generateMap(){
-        map = new StringBuilder("*".repeat(ROWS*COLS));
-        for(int i = 0; i < SIZES.length; i++){
-            int size = SIZES[i];
-            int count = AMOUNTS[i];
+        while (true) {
+            map = new StringBuilder("*".repeat(ROWS * COLS));
+            boolean success = true;
 
-            for(int j = 0; j < count; j++){
-                placeShips(size);
+            for (int i = 0; i < SIZES.length && success; i++) {
+                int size = SIZES[i];
+                int count = AMOUNTS[i];
+                for (int j = 0; j < count && success; j++) {
+                    if (!placeShips(size)) {
+                        success = false;
+                    }
+                }
             }
+
+            if (success) break;
         }
 
         for(int i = 0; i < COLS*ROWS; i++){

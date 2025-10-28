@@ -24,7 +24,7 @@ public class BrainFuckImpl implements Brainfuck{
         if (stackSize < 1)
             throw new IllegalArgumentException("error: StackSize too small (less than 1)");
         this.data = new byte[stackSize];
-        this.instructions = program;//.replaceAll("[^<>+\\-\\[\\]\\.,]", "");
+        this.instructions = program;
         this.out = out;
         this.in = in;
         stack = new Stack<Integer>();
@@ -67,7 +67,6 @@ public class BrainFuckImpl implements Brainfuck{
                         stack.pop();
                     }
                 }
-                //default -> throw new UnsupportedOperationException("Unfamiliar instruction: " + String.valueOf(instruction));
             }
         }
     }
